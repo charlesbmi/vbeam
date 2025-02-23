@@ -82,8 +82,8 @@ def az_el_to_cartesian(
     """
     direction = np.array(
         [
-            np.sin(azimuth) * np.cos(elevation),
-            np.sin(elevation),
+            np.sin(azimuth),
+            np.sin(elevation) * np.cos(azimuth),
             np.cos(azimuth) * np.cos(elevation),
         ]
     )

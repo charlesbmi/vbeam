@@ -1,6 +1,7 @@
 from vbeam.core import ElementGeometry, TransmittedWavefront, WaveData
 from vbeam.fastmath import numpy as np
 from vbeam.fastmath.traceable import traceable_dataclass
+from vbeam.util.coordinate_systems import az_el_to_cartesian
 
 
 @traceable_dataclass()
@@ -12,9 +13,11 @@ class PlaneWavefront(TransmittedWavefront):
         wave_data: WaveData,
     ) -> float:
         diff = point_position - sender.position
-        x, y, z = diff[0], diff[1], diff[2]
+        wave_direction = az_el_to_cartesian(
+            azimuth=wave_data.azimuth, elevation=wave_data.elevation
+        )
         return (
-            x * np.sin(wave_data.azimuth) * np.cos(wave_data.elevation)
-            + y * np.sin(wave_data.elevation)
-            + z * np.cos(wave_data.azimuth) * np.cos(wave_data.elevation)
+            diff[0] * wave_direction[0]
+            + diff[1] * wave_direction[1]
+            + diff[2] * wave_direction[2]
         )

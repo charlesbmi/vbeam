@@ -91,11 +91,12 @@ def az_el_rotation(azimuth: float, elevation: float) -> Rotation:
     # azimuth is rotation around fixed y-axis
     r_azimuth = Rotation.from_euler("y", azimuth, degrees=False)
 
+    # Follows the text-description of the conventions:
     # https://github.com/magnusdk/vbeam/pull/44#issuecomment-2504705798
-    # Equations and conventions appear to be equivalent to:
-    # 1. rotate elevation (clockwise) around fixed x-axis,
-    # 2. then rotate azimuth (counter-clockwise) around fixed y-axis
-    return r_azimuth * r_elevation
+    # 1. rotate azimuth (counter-clockwise) around fixed y-axis
+    # 2. then rotate elevation (clockwise) around fixed x-axis,
+    # Note: this is different from the equations
+    return r_elevation * r_azimuth
 
 
 def rotate_az_el(point: np.ndarray, azimuth: float, elevation: float) -> np.ndarray:
